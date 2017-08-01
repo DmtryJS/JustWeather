@@ -9,24 +9,24 @@
     <link href="css/style.css" rel="stylesheet">
   </head>
   <body>
-    <div id="openweathermap-widget-11">
+    <div id="app">
       <div class="widget-left">
          <div class="widget-left-menu widget-left-menu--brown">
             <div class="widget-left-menu__layout">
-                <h2 id='city_name' class="widget-left-menu__header">London</h2>
+                <h2 class="widget-left-menu__header">{{ city }}</h2>
             </div>
          </div>
       <div class="widget-left__body">
         <div class="weather-left-card">
            <div class="weather-left-card__row1">
-              <img id="today_pic" src="http://openweathermap.org/themes/openweathermap/assets/vendor/owm/img/widgets/03d.png" width="128" height="128" class="weather-left-card__img">
+              <img v-bind:src="src" width="128" height="128" class="weather-left-card__img">
               <div class="weather-left-card__col">
-                 <p id="today_temp" class="weather-left-card__number">19</p><span class="weather-left-card__rising">and rising</span>
+                 <p class="weather-left-card__number">{{ today_temp }}<span class="weather-left-card__degree">°C</span></p><span class="weather-left-card__rising">and rising</span>
               </div>
            </div>
            <div class="weather-left-card__row2">
-              <p id='today_rising' class="weather-left-card__means">scattered clouds</p>
-              <p id='today_wind' class="weather-left-card__wind">Wind: 7.7 m/s</p>
+              <p class="weather-left-card__means">{{ clouds }}</p>
+              <p class="weather-left-card__wind">{{ winds }}</p>
 
            </div>
         </div>
@@ -53,14 +53,27 @@
   </body>
 
   <script src="js/bootstrap.min.js"></script>
+  <script src="js/vue.js"></script>
   <script>
-    var token = '4c3dc92aab76270ddff54a9fa128abe4',
+
+  	 var token = '4c3dc92aab76270ddff54a9fa128abe4',
         city = 'Saransk',
         count = 6, //количество дней
         baseUrl = 'http://api.openweathermap.org/data/2.5/forecast/daily',
         requestString = baseUrl + '?q=' + city + '&APPID=' + token + '&units=metric' + '&cnt=' + count, 
         button = document.querySelector("button"),
         xhr = new XMLHttpRequest();
+
+  	 var app = new Vue({
+  	 	el: '#app',
+  	 	data: {
+  	 		city: city,
+  	 		today_temp: 0,
+  	 		clouds: '',
+  	 		winds: '',
+  	 		src: '#'
+  	 	}
+  	 });
 
     xhr.onreadystatechange = function() { 
       if (xhr.readyState != 4) return;
@@ -84,13 +97,12 @@
 
     function render(data) {
       var d = data.list;
-      render_container.innerHTML = '';
       var templ = '';
-      city_name.innerHTML = data.city.name;
-      today_temp.innerHTML = d[0].temp.day;// + '<span class="weather-left-card__degree">°C</span>';
-      today_rising.innerHTML = d[0].weather[0].main;
-      today_wind.innerHTML = 'Ветер: ' + d[0].speed + ' m/s Давление: ' + d[0].pressure;
-      today_pic.src = 'img/' + d[0].weather[0].icon + '.png';
+      app.city_name = data.city.name;
+      app.today_temp = Math.round(d[0].temp.day * 10) / 10;
+      app.clouds = d[0].weather[0].main;
+      app.winds = 'Ветер: ' + d[0].speed + ' m/s Давление: ' + d[0].pressure;
+      app.src = 'img/' + d[0].weather[0].icon + '.png';
 
       d.forEach(function(item, i) 
       { //<li class="calendar__item">Today<br>28 Jul<img src="http://openweathermap.org/img/w/10d.png" width="32" height="32" alt="Today"></li>
@@ -152,4 +164,5 @@
 
     require('./renderer.js')
   </script>
+  
 </html>
