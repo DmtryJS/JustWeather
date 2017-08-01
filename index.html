@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Wheather widget</title>
+    <style type="text/css"></style>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+  <body>
+    <div id="openweathermap-widget-11">
+      <div class="widget-left">
+         <div class="widget-left-menu widget-left-menu--brown">
+            <div class="widget-left-menu__layout">
+                <h2 id='city_name' class="widget-left-menu__header">London</h2>
+            </div>
+         </div>
+      <div class="widget-left__body">
+        <div class="weather-left-card">
+           <div class="weather-left-card__row1">
+              <img id="today_pic" src="http://openweathermap.org/themes/openweathermap/assets/vendor/owm/img/widgets/03d.png" width="128" height="128" class="weather-left-card__img">
+              <div class="weather-left-card__col">
+                 <p id="today_temp" class="weather-left-card__number">19</p><span class="weather-left-card__rising">and rising</span>
+              </div>
+           </div>
+           <div class="weather-left-card__row2">
+              <p id='today_rising' class="weather-left-card__means">scattered clouds</p>
+              <p id='today_wind' class="weather-left-card__wind">Wind: 7.7 m/s</p>
+
+           </div>
+        </div>
+         
+        <div class="widget-left__calendar">
+             <ul id='calendar' class="calendar">
+                  <li class="calendar__item">Today<br>28 Jul<img src="http://openweathermap.org/img/w/10d.png" width="32" height="32" alt="Today"></li>
+                  <li class="calendar__item">Sat<br>29 Jul<img src="http://openweathermap.org/img/w/10d.png" width="32" height="32" alt="Sat"></li>
+                  <li class="calendar__item">Sun<br>30 Jul<img src="http://openweathermap.org/img/w/10d.png" width="32" height="32" alt="Sun"></li>
+                  <li class="calendar__item">Mon<br>31 Jul<img src="http://openweathermap.org/img/w/10d.png" width="32" height="32" alt="Mon"></li>
+              </ul>
+        </div>
+        <div style="clear:both"></div>
+      </div>
+    </div>
+  </div>
+  
+    <div class="container">
+        <div id='render_container'></div>
+        <button type="button" class="btn btn-default" aria-label="Left Align">
+          <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>
+        </button>
+    </div>   
+  </body>
+
+  <script src="js/bootstrap.min.js"></script>
+  <script>
+    var token = '4c3dc92aab76270ddff54a9fa128abe4',
+        city = 'Saransk',
+        count = 6, //количество дней
+        baseUrl = 'http://api.openweathermap.org/data/2.5/forecast/daily',
+        requestString = baseUrl + '?q=' + city + '&APPID=' + token + '&units=metric' + '&cnt=' + count, 
+        button = document.querySelector("button"),
+        xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function() { 
+      if (xhr.readyState != 4) return;
+
+      if (xhr.status = 200) 
+      {
+        try 
+        {
+             if(button.hasAttribute('disabled'))
+              {
+                button.removeAttribute("disabled");
+              }
+    
+            var result = JSON.parse(xhr.responseText);
+            render(result);
+        } catch (err) {
+            console.log('Ошибка связи с сервером: ' +  err);
+        }  
+      };
+    };
+
+    function render(data) {
+      var d = data.list;
+      render_container.innerHTML = '';
+      var templ = '';
+      city_name.innerHTML = data.city.name;
+      today_temp.innerHTML = d[0].temp.day;// + '<span class="weather-left-card__degree">°C</span>';
+      today_rising.innerHTML = d[0].weather[0].main;
+      today_wind.innerHTML = 'Ветер: ' + d[0].speed + ' m/s Давление: ' + d[0].pressure;
+      today_pic.src = 'img/' + d[0].weather[0].icon + '.png';
+
+      d.forEach(function(item, i) 
+      { //<li class="calendar__item">Today<br>28 Jul<img src="http://openweathermap.org/img/w/10d.png" width="32" height="32" alt="Today"></li>
+        //if (i == 0) continue;
+        templ = templ +    '<li class="calendar__item">' +
+                               + ' ' + formatData(item.dt) +'<br>' +
+                                '<img src="img/' + item.weather[0].icon + '.png"' +'alt="icon">' + '<br>' +
+                                item.temp.day + '&degС' + '<br>' +
+                                item.pressure + '<br>' +
+                           '</li>';
+     /*   templ = templ +    '<ul class="list-group">' +  
+                              '<li class="list-group-item"><img src="img/' + item.weather[0].icon + '.png"' +'alt="icon"></li>' +
+                              '<li class="list-group-item">Дата: ' + formatData(item.dt) + '</li>' +
+                              '<li class="list-group-item">Т: ' + item.temp.day + '&degС</li>' +
+                              '<li class="list-group-item">Тmin: ' + item.temp.min + '&degС</li>' +
+                              '<li class="list-group-item">Тmax: ' + item.temp.max + '&degС</li>' +
+                              '<li class="list-group-item">Давление: ' + item.pressure + '</li>' +
+                              '<li class="list-group-item">Влажность: ' + item.humidity + ' %</li>' +
+                              '<li class="list-group-item">Скорость ветра: ' + item.speed + '</li>' +
+                           '</ul>';*/
+      });
+      calendar.innerHTML = templ;
+    }
+
+    function formatData(timestamp)
+    {
+        var ts = timestamp * 1000,
+        date = new Date(ts),
+        year = date.getFullYear(),
+        m = date.getMonth() + 1,
+        d = date.getDate();
+
+        return d + '.' + m + '.' + year;
+    }
+    
+    function getData(){
+        if(!button.hasAttribute('disabled'))
+        {
+          button.setAttribute("disabled", "disabled");
+        }
+        
+        xhr.open('GET', requestString, true);
+        xhr.send();
+    }
+
+    button.addEventListener('click', function() {
+      getData();
+    });
+
+    setInterval(function(){
+        getData();
+    }, 300000);
+
+    xhr.open('GET', requestString, true);
+    xhr.send();
+
+    
+
+
+    require('./renderer.js')
+  </script>
+</html>
