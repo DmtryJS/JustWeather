@@ -12,19 +12,19 @@ const url = require('url')
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 //athermap
-//api 4c3dc92aab76270ddff54a9fa128abe4
-//api.openweathermap.org/data/2.5/weather?q=Saransk&APPID=4c3dc92aab76270ddff54a9fa128abe4 //на сегодня
-//api.openweathermap.org/data/2.5/forecast?q=Saransk&APPID=4c3dc92aab76270ddff54a9fa128abe4 //на 5 дней
 
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow(
     {
-      width: 720, 
-      height: 300,
-     // transparent: true,
-     // frame: false,
-     // toolbar: false
+      width: 700, 
+      height: 260,
+      resizable: false, //запрет resize
+      skipTaskbar: true, //запрет отображения в трее
+      title: 'Погода',
+      //transparent: true,
+      //frame: false,
+      //toolbar: false
     })
 
   // and load the index.html of the app.
@@ -44,6 +44,9 @@ function createWindow () {
     // when you should delete the corresponding element.
     mainWindow = null
   })
+
+  //убрать меню
+  mainWindow.setMenuBarVisibility(false)
 }
 
 //убираем менюху
@@ -72,6 +75,8 @@ app.on('activate', function () {
     createWindow()
   }
 })
+
+
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
