@@ -20,10 +20,10 @@ function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow(
     {
-      width: 800, 
-      height: 930
-     // transparent: true,
-    //  frame: false,
+      width: 720, 
+      height: 300,
+      transparent: true,
+      frame: false,
      // toolbar: false
     })
 
@@ -46,10 +46,10 @@ function createWindow () {
   })
 }
 
-/*//убираем менюху
+//убираем менюху
 app.on('browser-window-created',function(e,window) {
       window.setMenu(null);
-  });*/
+  });
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
