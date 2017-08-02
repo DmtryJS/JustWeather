@@ -9,7 +9,7 @@
   <body>
     <div id="app">
       <div class="widget-left">
-         <div class="widget-left-menu widget-left-menu--brown">
+         <div class="widget-left-menu widget-left-menu--brown" >
             <div class="widget-left-menu__layout">
                 <h2 class="widget-left-menu__header">{{ city }}</h2>
             </div>
@@ -56,7 +56,7 @@
         count = 6, //количество дней
         baseUrl = 'http://api.openweathermap.org/data/2.5/forecast/daily',
         requestString = baseUrl + '?q=' + city + '&APPID=' + token + '&units=metric' + '&cnt=' + count;
-        updateInterval = 1 * 60 * 60 * 60; // первая цифра задается в минутах.
+        updateInterval = 10 * 1000 * 60; // первая цифра задается в минутах (сейчас 10 минут). 
 
   	 var app = new Vue({
   	 	el: '#app',

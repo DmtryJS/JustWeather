@@ -22,8 +22,8 @@ function createWindow () {
     {
       width: 720, 
       height: 300,
-      transparent: true,
-      frame: false,
+     // transparent: true,
+     // frame: false,
      // toolbar: false
     })
 
@@ -47,9 +47,9 @@ function createWindow () {
 }
 
 //убираем менюху
-app.on('browser-window-created',function(e,window) {
+/*app.on('browser-window-created',function(e,window) {
       window.setMenu(null);
-  });
+  });*/
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
