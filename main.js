@@ -1,12 +1,15 @@
+const {app, Menu, Tray} = require('electron')
+
 const electron = require('electron')
 // Module to control application life.
-const app = electron.app
+//const app = electron.app
 
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 
 const path = require('path')
 const url = require('url')
+const icon_path = './img/icon.png'
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -22,6 +25,7 @@ function createWindow () {
       resizable: false, //запрет resize
       skipTaskbar: true, //запрет отображения в трее
       title: 'Погода',
+      icon: icon_path,
       //transparent: true,
       //frame: false,
       //toolbar: false
@@ -48,6 +52,18 @@ function createWindow () {
   //убрать меню
   mainWindow.setMenuBarVisibility(false)
 }
+
+//Иконка и контекстное меню в трее.
+let tray = null
+app.on('ready', () => {
+  tray = new Tray(icon_path)
+  const contextMenu = Menu.buildFromTemplate([
+    {label: 'Показать', type: 'radio'},
+    {label: 'Выход', type: 'radio'},
+  ])
+  tray.setToolTip('Погодный виджет')
+  tray.setContextMenu(contextMenu)
+})
 
 //убираем менюху
 /*app.on('browser-window-created',function(e,window) {
