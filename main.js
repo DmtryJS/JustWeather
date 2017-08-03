@@ -2,7 +2,9 @@ const {app, Menu, Tray} = require('electron')
 
 const electron = require('electron')
 // Module to control application life.
-//const app = electron.app
+//const app = electron.app;
+
+
 
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
@@ -51,29 +53,10 @@ function createWindow () {
 
   //убрать меню
   mainWindow.setMenuBarVisibility(false)
+  var position = getPosition();
+  console.log();
+  mainWindow.setPosition(position.x, position.y, false)
 }
-
-//Иконка и контекстное меню в трее.
-let tray = null
-app.on('ready', () => {
-  tray = new Tray(icon_path)
-  const contextMenu = Menu.buildFromTemplate([
-    {label: 'Показать', type: 'radio'},
-    {label: 'Выход', type: 'radio'},
-  ])
-  tray.setToolTip('Погодный виджет')
-  tray.setContextMenu(contextMenu)
-})
-
-//убираем менюху
-/*app.on('browser-window-created',function(e,window) {
-      window.setMenu(null);
-  });*/
-
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
@@ -92,7 +75,50 @@ app.on('activate', function () {
   }
 })
 
+//Иконка и контекстное меню в трее.
+var tray = null
+app.on('ready', () => {
+  
+  createWindow();
+  
+  tray = new Tray(icon_path)
+  /*const contextMenu = Menu.buildFromTemplate([
+    {label: 'Показать', type: 'radio'},
+    {label: 'Выход', type: 'radio'},
+  ])*/
+  tray.setToolTip('Погодный виджет')
+/*  tray.setContextMenu(contextMenu)*/
+  tray.on('click', () => {
+  mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show()
+})
+ 
+  mainWindow.on('show', () => {
+  tray.setHighlightMode('always')
+  })
 
+  mainWindow.on('hide', () => {
+    tray.setHighlightMode('never')
+  })
+  
+  //console.log(getPosition(mainWindow))
+})
+
+function getScreen()
+{
+  var screen = electron.screen;
+  var mainScreen = screen.getPrimaryDisplay();
+  return { x: mainScreen.bounds.width, 
+           y: mainScreen.bounds.height};
+}
+
+function getPosition()
+{
+  var res = getScreen();
+  var x = res.x - mainWindow.getBounds().width - 20;
+  var y = 30;
+
+  return { x : x, y : y} 
+}
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
