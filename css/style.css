@@ -14,7 +14,7 @@ li {
   border-color: #000;
   font: 400 14px/1.3 Oswald,Arial,sans-serif;
   margin: 0 5px 5px;
-  width: 680px;
+  width: 430px;
   position: relative;
 }
 
@@ -34,8 +34,8 @@ li {
   justify-content: space-around;
   ms-flex-direction: row;
   ms-flex-pack: distribute;
-  padding-bottom: 16px;
-  width: 680px;
+  /*padding-bottom: 16px;*/
+  width: 100%;
 }
 
 .widget-left--compact,
@@ -87,7 +87,7 @@ li {
   ms-flex-pack: justify;
   padding: 0 0 5px;
   position: relative;
-  width: 660px;
+  width: 100%;
 }
 
 .widget-left-menu__header
@@ -135,7 +135,7 @@ li {
   display: -webkit-box;
   display: -webkit-flex;
   flex-direction: row;
-  height: 128px;
+  height: 100px;
   justify-content: flex-end;
   width: auto;
 }
@@ -225,7 +225,7 @@ li {
   webkit-box-pack: justify;
   webkit-flex-direction: row;
   webkit-justify-content: space-between;
-  width: 425px;
+  width: 205px;
 }
 
 .calendar__item

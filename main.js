@@ -22,8 +22,8 @@ function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow(
     {
-      width: 700, 
-      height: 260,
+      width: 460, 
+      height: 220,
       resizable: false, //запрет resize
       skipTaskbar: true, //запрет отображения в трее
       title: 'Погода',
@@ -53,6 +53,7 @@ function createWindow () {
 
   //убрать меню
   mainWindow.setMenuBarVisibility(false)
+  
   var position = getPosition();
   console.log();
   mainWindow.setPosition(position.x, position.y, false)
