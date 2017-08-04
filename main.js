@@ -1,22 +1,18 @@
-const {app, Menu, Tray} = require('electron')
+const {app, Menu, ipcMain, Tray} = require('electron')
 
 const electron = require('electron')
-// Module to control application life.
-//const app = electron.app;
-
-
-
-// Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 
 const path = require('path')
 const url = require('url')
-const icon_path = './img/icon.png'
+var icon_path = './img/icon.png'
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
-//athermap
+let tray = null
+
+app.on('window-all-closed', function () {
+    app.quit()
+})
 
 function createWindow () {
   // Create the browser window.
@@ -24,102 +20,86 @@ function createWindow () {
     {
       width: 460, 
       height: 220,
+      show: false, //по умолчанию скрываем окно
       resizable: false, //запрет resize
       skipTaskbar: true, //запрет отображения в трее
       title: 'Погода',
       icon: icon_path,
-      //transparent: true,
-      //frame: false,
-      //toolbar: false
+      transparent: true,
+      frame: false,
+      toolbar: false
     })
 
-  // and load the index.html of the app.
-  mainWindow.loadURL(url.format({
+    mainWindow.loadURL(url.format({
     pathname: path.join(__dirname, 'index.html'),
     protocol: 'file:',
     slashes: true
   }))
 
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+    mainWindow.on('closed', function () {
 
-  // Emitted when the window is closed.
-  mainWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
     mainWindow = null
   })
 
   //убрать меню
   mainWindow.setMenuBarVisibility(false)
-  
-  var position = getPosition();
-  console.log();
-  mainWindow.setPosition(position.x, position.y, false)
-}
 
-// Quit when all windows are closed.
-app.on('window-all-closed', function () {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
-
-app.on('activate', function () {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
-    createWindow()
-  }
-})
-
-//Иконка и контекстное меню в трее.
-var tray = null
-app.on('ready', () => {
-  
-  createWindow();
-  
-  tray = new Tray(icon_path)
-  /*const contextMenu = Menu.buildFromTemplate([
-    {label: 'Показать', type: 'radio'},
-    {label: 'Выход', type: 'radio'},
-  ])*/
-  tray.setToolTip('Погодный виджет')
-/*  tray.setContextMenu(contextMenu)*/
-  tray.on('click', () => {
-  mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show()
-})
- 
-  mainWindow.on('show', () => {
+  mainWindow.on('show', function() {
   tray.setHighlightMode('always')
   })
 
-  mainWindow.on('hide', () => {
+  mainWindow.on('hide', function() {
     tray.setHighlightMode('never')
   })
-  
-  //console.log(getPosition(mainWindow))
+}
+
+app.on('ready', function() { 
+  createWindow();
+  createTray();
 })
 
-function getScreen()
+function createTray()
 {
-  var screen = electron.screen;
-  var mainScreen = screen.getPrimaryDisplay();
-  return { x: mainScreen.bounds.width, 
-           y: mainScreen.bounds.height};
+  tray = new Tray(icon_path)
+  tray.setToolTip('Погодный виджет')
+  tray.on('click', function() {
+  toggleWindow();
+})
+}
+
+function toggleWindow() 
+{
+  if (mainWindow.isVisible()) 
+  {
+    mainWindow.hide()
+  } else 
+  {
+    showWindow()
+  }
+}
+
+function showWindow() {
+  var position = getPosition();
+  mainWindow.setPosition(position.x, position.y, false)
+  mainWindow.show()
+  mainWindow.focus()
 }
 
 function getPosition()
 {
-  var res = getScreen();
-  var x = res.x - mainWindow.getBounds().width - 20;
-  var y = 30;
+  var screen = electron.screen,
+      mainScreen = screen.getPrimaryDisplay(),
+      tray_icon = tray.getBounds();
+       
+  var x = tray_icon.x + (tray_icon.width/2 - mainWindow.getBounds().width/2);
+      y = mainScreen.bounds.height - mainWindow.getBounds().height - 30; 
 
-  return { x : x, y : y} 
+      //если окно вылазит за края.
+      if ((x + mainWindow.getBounds().width - 10) > mainScreen.bounds.width)
+      {
+        x = mainScreen.bounds.width - mainWindow.getBounds().width - 10;
+      }
+
+  return {x : x, y : y}
 }
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.

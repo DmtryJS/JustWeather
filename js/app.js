@@ -1,11 +1,11 @@
-var token = '4c3dc92aab76270ddff54a9fa128abe4',
-    city = 'Saransk',
-    count = 4, //количество дней
-    baseUrl = 'http://api.openweathermap.org/data/2.5/forecast/daily',
-    requestString = baseUrl + '?q=' + city + '&APPID=' + token + '&units=metric' + '&cnt=' + count;
-    updateInterval = 10 * 1000 * 60; // первая цифра задается в минутах (сейчас 10 минут). 
+const token = '4c3dc92aab76270ddff54a9fa128abe4',
+      city = 'Saransk',
+      count = 4, //количество дней
+      baseUrl = 'http://api.openweathermap.org/data/2.5/forecast/daily',
+      requestString = baseUrl + '?q=' + city + '&APPID=' + token + '&units=metric' + '&cnt=' + count,
+      updateInterval = 10 * 1000 * 60; // первая цифра задается в минутах (сейчас 10 минут). 
 
-var app = new Vue({
+var vue_app = new Vue({
    	          el: '#app',
    	          data: {
   	             city: city,
@@ -60,4 +60,4 @@ var app = new Vue({
   	 });
 
 //периодическое обновление погоды
-setInterval(app.getData, updateInterval);
+setInterval(vue_app.getData, updateInterval);
