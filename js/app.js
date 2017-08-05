@@ -55,11 +55,15 @@ var vue_app = new Vue({
                     this.today_weather_icon = 'wi wi-' + d[0].weather[0].icon;
                     this.description = d[0].weather[0].description;
                     this.days = data.list.splice(1,  count); //удаляем из отрисовки 1 сегодняшний день, он и так отображается отдельно.
+                    
+                    let toApp = { 'icon': d[0].weather[0].icon,
+                                  'today_temp': this.today_temp};
+                    ipcRenderer.send('updateTrayIconEvent', toApp);
                 },
 
-                closeEvent: function()
+                hideEvent: function()
                 {
-                    ipcRenderer.send('closeEvent-message');
+                    ipcRenderer.send('hideEvent');
                 }
           },
 

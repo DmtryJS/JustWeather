@@ -107,6 +107,12 @@ function getPosition()
   return {x : x, y : y}
 }
 
-ipcMain.on('closeEvent-message', (event, arg) => {
+ipcMain.on('hideEvent', (event, arg) => {
   toggleWindow();
+})
+
+//обновление иконки после прихода погоды
+ipcMain.on('updateTrayIconEvent', (event, arg) => {
+  tray.setToolTip('Температура на улице ' + arg.today_temp + '°C');
+  tray.setImage('./img/' + arg.icon + '.png');
 })
