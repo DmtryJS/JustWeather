@@ -7,6 +7,12 @@ li {
     list-style-type: none; 
 }
 
+button, 
+button:active, 
+button:focus {
+    outline: none;
+}
+
 .widget-left
 {
   background-color: #fff;

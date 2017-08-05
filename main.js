@@ -9,6 +9,7 @@ var icon_path = './img/icon.png'
 
 let mainWindow
 let tray = null
+let interval
 
 app.on('window-all-closed', function () {
     app.quit()
@@ -59,8 +60,22 @@ app.on('ready', function() {
 
 function createTray()
 {
-  tray = new Tray(icon_path)
-  tray.setToolTip('Погодный виджет')
+  
+  tray = new Tray('./img/preloader_tray_icon.png')
+  tray.setToolTip('Запрос погоды...')
+  
+  const contextMenu = Menu.buildFromTemplate([
+    {label: 'Exit', 
+     type: 'normal', 
+     click: function() 
+     {
+        mainWindow = null
+        app.quit()
+    }},
+  ])
+  
+  tray.setContextMenu(contextMenu)
+
   tray.on('click', function() {
   toggleWindow();
 })
@@ -98,7 +113,8 @@ function getPosition()
   var x = tray_icon.x + (tray_icon.width/2 - appWidth/2);
       y = displayHeight - appHeight - 30; 
 
-      //если окно вылазит за края дисплея, пока вариант только для классического расположения
+      //если окно вылазит за края дисплея, 
+      //пока вариант только для классического расположения панели, те внизу.
       if ((x + appWidth - 10) > displayWidth)
       {
         x = displayWidth - appWidth - 10;
