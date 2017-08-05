@@ -1,3 +1,5 @@
+const {ipcRenderer} = require('electron')
+
 const token = '4c3dc92aab76270ddff54a9fa128abe4',
       city = 'Saransk',
       count = 4, //количество дней
@@ -12,9 +14,10 @@ var vue_app = new Vue({
   	             today_temp: '',
   	             clouds: '',
   	             winds: '',
-  	             src: '#',
+  	             description: '',
                  days: [],
-                 show: false
+                 show: false,
+                 today_weather_icon: ""
    	            },
               
               methods: {
@@ -49,9 +52,15 @@ var vue_app = new Vue({
                     this.today_temp = Math.round(d[0].temp.day * 10) / 10;
                     this.clouds = d[0].weather[0].main;
                     this.winds = 'Ветер: ' + d[0].speed + ' m/s Давление: ' + d[0].pressure;
-                    this.src = 'img/' + d[0].weather[0].icon + '.png';
+                    this.today_weather_icon = 'wi wi-' + d[0].weather[0].icon;
+                    this.description = d[0].weather[0].description;
                     this.days = data.list.splice(1,  count); //удаляем из отрисовки 1 сегодняшний день, он и так отображается отдельно.
                 },
+
+                closeEvent: function()
+                {
+                    ipcRenderer.send('closeEvent-message');
+                }
           },
 
                 mounted() {

@@ -35,7 +35,6 @@ li {
   justify-content: space-around;
   ms-flex-direction: row;
   ms-flex-pack: distribute;
-  /*padding: 3px;*/
   width: 100%;
 }
 
@@ -108,19 +107,31 @@ li {
 
 .widget-left-menu--brown .widget-left-menu__layout
 {
-  border-bottom: 2px solid #ff4f98;
+  border-bottom: 2px solid #000;
 }
 
 .widget-left-menu--brown
 {
-  /*background-image: linear-gradient(to top left,#03cc78,#03cc78);*/
   position: relative;
 }
 
 .btn {
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.btn-refresh {
     position: absolute;
-    top: 45px;
-    left: 16px;
+    top: 48px;
+    left: 10px;
+}
+
+.btn-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 99;
 }
 
 .weather-left-card
@@ -137,8 +148,13 @@ li {
   display: -webkit-flex;
   flex-direction: row;
   height: 100px;
-  justify-content: flex-end;
   width: auto;
+}
+
+.weather-left-card__row1 i 
+{
+  margin:0 10px;
+  font-size: 46px;
 }
 
 .weather-left-card__img
@@ -215,6 +231,7 @@ li {
   list-style: none;
   margin-bottom: 17px;
   margin-top: 16px;
+  margin-left: 20px;
   ms-flex-align: baseline;
   ms-flex-direction: row;
   ms-flex-pack: justify;
@@ -247,4 +264,9 @@ li {
   height: 32px;
   margin: 0 auto;
   width: 32px;
+}
+
+ul.calendar i {
+  margin:10px;
+  font-size: 24px;
 }

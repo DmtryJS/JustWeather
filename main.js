@@ -18,14 +18,13 @@ function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow(
     {
-      width: 460, 
+      width: 450, 
       height: 220,
       show: false, //по умолчанию скрываем окно
-      resizable: false, //запрет resize
+      resizable: true, //запрет resize
       skipTaskbar: true, //запрет отображения в трее
-      title: 'Погода',
       icon: icon_path,
-      transparent: true,
+     // transparent: true,
       frame: false,
       toolbar: false
     })
@@ -89,17 +88,25 @@ function getPosition()
 {
   var screen = electron.screen,
       mainScreen = screen.getPrimaryDisplay(),
-      tray_icon = tray.getBounds();
-       
-  var x = tray_icon.x + (tray_icon.width/2 - mainWindow.getBounds().width/2);
-      y = mainScreen.bounds.height - mainWindow.getBounds().height - 30; 
+      tray_icon = tray.getBounds(),
 
-      //если окно вылазит за края.
-      if ((x + mainWindow.getBounds().width - 10) > mainScreen.bounds.width)
+      appWidth = mainWindow.getBounds().width,
+      appHeight = mainWindow.getBounds().height,
+      displayHeight = mainScreen.bounds.height,
+      displayWidth = mainScreen.bounds.width;
+       
+  var x = tray_icon.x + (tray_icon.width/2 - appWidth/2);
+      y = displayHeight - appHeight - 30; 
+
+      //если окно вылазит за края дисплея, пока вариант только для классического расположения
+      if ((x + appWidth - 10) > displayWidth)
       {
-        x = mainScreen.bounds.width - mainWindow.getBounds().width - 10;
+        x = displayWidth - appWidth - 10;
       }
 
   return {x : x, y : y}
 }
 
+ipcMain.on('closeEvent-message', (event, arg) => {
+  toggleWindow();
+})

@@ -5,10 +5,15 @@
     <title>Wheather widget</title>
     <style type="text/css"></style>
     <link href="css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/ionicons.css">
+    <link rel="stylesheet" href="css/weather-icons.css">
   </head>
   <body>
     <div id="app">
       <div class="widget-left">
+      	<button class="btn btn-close" v-on:click ="closeEvent">
+				<i class="ion-close-circled"></i>
+      	</button>
          <div class="widget-left-menu widget-left-menu--brown" >
             <div class="widget-left-menu__layout">
                 <h2 class="widget-left-menu__header">{{ city }}</h2>
@@ -17,13 +22,13 @@
       <div class="widget-left__body" v-show="show" style="display: none">
         <div class="weather-left-card">
            <div class="weather-left-card__row1">
-              <img v-bind:src="src" width="128" height="128" class="weather-left-card__img">
+           	  <i  v-bind:class="[today_weather_icon]"></i>
               <div class="weather-left-card__col">
-                 <p class="weather-left-card__number">{{ today_temp }}<span class="weather-left-card__degree">°C</span></p><span class="weather-left-card__rising">and rising</span>
+                 <p class="weather-left-card__number">{{ today_temp }}<span class="weather-left-card__degree">°C</span></p><span class="weather-left-card__rising"></span>
               </div>
            </div>
            <div class="weather-left-card__row2">
-              <p class="weather-left-card__means">{{ clouds }}</p>
+              <p class="weather-left-card__means">{{ description }}</p>
               <p class="weather-left-card__wind">{{ winds }}</p>
 
            </div>
@@ -32,7 +37,7 @@
              <ul id='calendar' class="calendar">
                   <li v-for="day in days">
                       {{ formatData(day.dt) }}<br>
-                      <img v-bind:src="'img/' + day.weather[0].icon + '.png'" width="32" height="32" alt=""><br>
+                      <i v-bind:class="['wi ' + 'wi-' + day.weather[0].icon]"></i><br>
                       {{ day.temp.day }}&degС<br>
                       {{ day.pressure }}<br>
                   </li>
@@ -41,8 +46,8 @@
         <div style="clear:both"></div>
       </div>
     </div>
-        <button type="button" class="btn" v-on:click ="getData">
-          update
+        <button type="button" class="btn btn-refresh" v-on:click ="getData">
+        		<i class="ion-android-refresh"></i>
         </button>
   </div>
   </body>
