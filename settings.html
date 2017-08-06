@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Settings page</title>
+	<link href="css/style.css" rel="stylesheet">
+	<link rel="stylesheet" href="css/ionicons.css">
+</head>
+<body>
+	<div id="settings_container">
+		<button class="btn btn-close">
+			<i class="ion-minus"></i>
+      </button>
+      <div class="widget-left-menu widget-left-menu--brown" >
+         <div class="widget-left-menu__layout">
+             <h2 class="widget-left-menu__header">Settings</h2>
+         </div>
+         <div class="settings_container">
+         	<ul class="form_container">
+					<li >
+						<label for="token"><i class="ion-key"></i> Application token</label>		
+						<input type="text" name="token" v-model="token_value" size="32"><br>
+					</li>
+					<li>
+						<label for="city"><i class="ion-location"></i> City</label>							
+						<input type="text" name="city" v-model="city" size="16"><br>
+					</li>
+         	</ul>			
+         	<div class="apply">
+					<button class="apply_button" v-on:click ="apply">
+						<i class="ion-checkmark-circled"></i>Apply
+					</button>
+					<button class="cancel_button" v-on:click ="cancel">
+						<i class="ion-minus-circled"></i>Cancel
+					</button>
+         	</div>
+         </div>
+      </div>
+	</div>
+	<script src="js/vue.js"></script>
+	<script src="js/settings.js"></script>
+</body>
+</html>

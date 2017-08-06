@@ -1,7 +1,12 @@
 const {ipcRenderer} = require('electron')
+const axios = require('axios')
+const loadIniFile = require('read-ini-file')
+const path = require('path')
+const settings_path = path.join(__dirname, 'settings.ini')
+const settings = loadIniFile.sync(settings_path)
 
-const token = '4c3dc92aab76270ddff54a9fa128abe4',
-      city = 'Saransk',
+const token = settings.token,
+      city = settings.city,
       count = 4, //количество дней
       baseUrl = 'http://api.openweathermap.org/data/2.5/forecast/daily',
       requestString = baseUrl + '?q=' + city + '&APPID=' + token + '&units=metric' + '&cnt=' + count,
@@ -23,7 +28,7 @@ var vue_app = new Vue({
               methods: {
 
                 getData: function () {
-                    var a = this;
+                    let a = this;
                     axios.get(requestString)
                           .then(function (response) {
                               a.render(response.data);
@@ -35,42 +40,54 @@ var vue_app = new Vue({
 
                 formatData: function(timestamp)
                 {
-                    var ts = timestamp * 1000,
-                    date = new Date(ts),
-                    year = date.getFullYear(),
-                    m = date.getMonth() + 1,
-                    d = date.getDate();
+                    let ts = timestamp * 1000,
+                        date = new Date(ts),
+                        year = date.getFullYear(),
+                        m = date.getMonth() + 1,
+                        d = date.getDate();
                     
                     return d + '.' + m + '.' + year;
                 },
 
                 render: function(data)
                 {
-                    var d = data.list;
+                    let d = data.list;
                     this.show = true;
                     this.city_name = data.city.name;
-                    this.today_temp = Math.round(d[0].temp.day * 10) / 10;
+                    this.today_temp = this.roundCelsius(d[0].temp.day);
                     this.clouds = d[0].weather[0].main;
-                    this.winds = 'Ветер: ' + d[0].speed + ' m/s Давление: ' + d[0].pressure;
+                    this.winds = 'Ветер: ' + d[0].speed + ' м/с, Давление: ' + this.convertPlesure(d[0].pressure) + 'mmHg';
                     this.today_weather_icon = 'wi wi-' + d[0].weather[0].icon;
                     this.description = d[0].weather[0].description;
                     this.days = data.list.splice(1,  count); //удаляем из отрисовки 1 сегодняшний день, он и так отображается отдельно.
                     
-                    let toApp = { 'icon': d[0].weather[0].icon,
-                                  'today_temp': this.today_temp};
+                    let toApp = { 
+                                  'icon': d[0].weather[0].icon,
+                                  'today_temp': this.today_temp
+                                };
+
                     ipcRenderer.send('updateTrayIconEvent', toApp);
+                },
+
+                roundCelsius: function(float)
+                {
+                    return Math.round(float * 10) / 10;
+                },
+
+                convertPlesure: function(plesureOnHpa)
+                {
+                    return Math.round(plesureOnHpa * 0.75);
                 },
 
                 hideEvent: function()
                 {
                     ipcRenderer.send('hideEvent');
                 }
-          },
+              },
 
                 mounted() {
                     this.getData();
                 }
   	 });
-
 //периодическое обновление погоды
 setInterval(vue_app.getData, updateInterval);

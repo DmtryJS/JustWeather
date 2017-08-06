@@ -7,6 +7,9 @@
     "start": "electron ."
   },
   "devDependencies": {
-    "electron": "~1.6.2"
+    "axios": "^0.16.2",
+    "electron": "~1.6.2",
+    "read-ini-file": "^1.0.0",
+    "write-ini-file": "^1.0.0"
   }
 }

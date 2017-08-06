@@ -1,15 +1,12 @@
-const {app, Menu, ipcMain, Tray} = require('electron')
+const {app, Menu, ipcMain, Tray, BrowserWindow, webContents} = require('electron')
 
 const electron = require('electron')
-const BrowserWindow = electron.BrowserWindow
-
 const path = require('path')
 const url = require('url')
 var icon_path = './img/icon.png'
 
 let mainWindow
 let tray = null
-let interval
 
 app.on('window-all-closed', function () {
     app.quit()
@@ -19,10 +16,10 @@ function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow(
     {
-      width: 450, 
-      height: 220,
+      width: 460, 
+      height: 200,
       show: false, //по умолчанию скрываем окно
-      resizable: true, //запрет resize
+      //resizable: false, //запрет resize
       skipTaskbar: true, //запрет отображения в трее
       icon: icon_path,
      // transparent: true,
@@ -64,15 +61,42 @@ function createTray()
   tray = new Tray('./img/preloader_tray_icon.png')
   tray.setToolTip('Запрос погоды...')
   
-  const contextMenu = Menu.buildFromTemplate([
-    {label: 'Exit', 
-     type: 'normal', 
-     click: function() 
-     {
-        mainWindow = null
-        app.quit()
-    }},
-  ])
+  const contextMenu = Menu.buildFromTemplate(
+    [ 
+      {
+        label: 'Settings', 
+        type: 'normal',
+
+        click: function() 
+        {
+          mainWindow.loadURL(url.format({
+          pathname: path.join(__dirname, 'settings.html'),
+          protocol: 'file:',
+          slashes: true
+          }))
+          let contents = mainWindow.webContents
+          
+          contents.on('dom-ready', function()
+          {
+            if(!mainWindow.isVisible())
+            {
+              showWindow()
+            }
+          })    
+        }
+      },
+
+      {
+        label: 'Exit', 
+        type: 'normal', 
+      
+        click: function() 
+        {
+          mainWindow = null
+          app.quit()
+        }
+      }
+    ])
   
   tray.setContextMenu(contextMenu)
 
@@ -127,6 +151,13 @@ ipcMain.on('hideEvent', (event, arg) => {
   toggleWindow();
 })
 
+ipcMain.on('routerEvent', function(event, arg){
+  mainWindow.loadURL(url.format({
+          pathname: path.join(__dirname, arg),
+          protocol: 'file:',
+          slashes: true
+          }))
+})
 //обновление иконки после прихода погоды
 ipcMain.on('updateTrayIconEvent', (event, arg) => {
   tray.setToolTip('Температура на улице ' + arg.today_temp + '°C');
