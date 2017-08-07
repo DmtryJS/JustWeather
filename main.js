@@ -27,12 +27,8 @@ function createWindow () {
       toolbar: false
     })
 
-    mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
-    protocol: 'file:',
-    slashes: true
-  }))
-
+    routeTo(mainWindow, 'index.html')
+    
     mainWindow.on('closed', function () {
 
     mainWindow = null
@@ -69,11 +65,7 @@ function createTray()
 
         click: function() 
         {
-          mainWindow.loadURL(url.format({
-          pathname: path.join(__dirname, 'settings.html'),
-          protocol: 'file:',
-          slashes: true
-          }))
+          routeTo(mainWindow, 'settings.html')
           let contents = mainWindow.webContents
           
           contents.on('dom-ready', function()
@@ -151,13 +143,18 @@ ipcMain.on('hideEvent', (event, arg) => {
   toggleWindow();
 })
 
-ipcMain.on('routerEvent', function(event, arg){
-  mainWindow.loadURL(url.format({
-          pathname: path.join(__dirname, arg),
+ipcMain.on('routerEvent', function(event, arg) {
+  routeTo(mainWindow, arg)
+})
+
+function routeTo(window, to)
+{
+  window.loadURL(url.format({
+          pathname: path.join(__dirname, to),
           protocol: 'file:',
           slashes: true
           }))
-})
+}
 //обновление иконки после прихода погоды
 ipcMain.on('updateTrayIconEvent', (event, arg) => {
   tray.setToolTip('Температура на улице ' + arg.today_temp + '°C');
