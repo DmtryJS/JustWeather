@@ -23,8 +23,8 @@ function createWindow () {
       skipTaskbar: true, //запрет отображения в трее
       icon: icon_path,
      // transparent: true,
-      frame: false,
-      toolbar: false
+      //frame: false,
+      //toolbar: false
     })
 
     routeTo(mainWindow, 'index.html')
@@ -35,7 +35,7 @@ function createWindow () {
   })
 
   //убрать меню
-  mainWindow.setMenuBarVisibility(false)
+ // mainWindow.setMenuBarVisibility(false)
 
   mainWindow.on('show', function() {
   tray.setHighlightMode('always')
@@ -47,8 +47,8 @@ function createWindow () {
 }
 
 app.on('ready', function() { 
-  createWindow();
-  createTray();
+  createWindow()
+  createTray()
 })
 
 function createTray()
@@ -68,13 +68,19 @@ function createTray()
           routeTo(mainWindow, 'settings.html')
           let contents = mainWindow.webContents
           
-          contents.on('dom-ready', function()
+          setTimeout(function(){
+            if(!mainWindow.isVisible())
+            {
+              showWindow()
+            }
+          }, 200)
+          /*contents.on('dom-ready', function()
           {
             if(!mainWindow.isVisible())
             {
               showWindow()
             }
-          })    
+          }) */   
         }
       },
 
@@ -110,7 +116,9 @@ function toggleWindow()
 
 function showWindow() {
   var position = getPosition();
-  mainWindow.setPosition(position.x, position.y, false)
+  console.log(position)
+  //mainWindow.setPosition(position.x, position.y, false)
+  mainWindow.setPosition(100, 100, false)
   mainWindow.show()
   mainWindow.focus()
 }
@@ -147,9 +155,9 @@ ipcMain.on('routerEvent', function(event, arg) {
   routeTo(mainWindow, arg)
 })
 
-function routeTo(window, to)
+function routeTo(win, to)
 {
-  window.loadURL(url.format({
+  win.loadURL(url.format({
           pathname: path.join(__dirname, to),
           protocol: 'file:',
           slashes: true
