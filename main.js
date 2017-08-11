@@ -23,8 +23,8 @@ function createWindow () {
       skipTaskbar: true, //запрет отображения в трее
       icon: icon_path,
      // transparent: true,
-      //frame: false,
-      //toolbar: false
+      frame: false,
+      toolbar: false
     })
 
     routeTo(mainWindow, 'index.html')
@@ -35,7 +35,7 @@ function createWindow () {
   })
 
   //убрать меню
- // mainWindow.setMenuBarVisibility(false)
+  mainWindow.setMenuBarVisibility(false)
 
   mainWindow.on('show', function() {
   tray.setHighlightMode('always')
@@ -68,19 +68,19 @@ function createTray()
           routeTo(mainWindow, 'settings.html')
           let contents = mainWindow.webContents
           
-          setTimeout(function(){
+          /*setTimeout(function(){
             if(!mainWindow.isVisible())
             {
               showWindow()
             }
-          }, 200)
-          /*contents.on('dom-ready', function()
+          }, 200)*/
+          contents.on('dom-ready', function()
           {
             if(!mainWindow.isVisible())
             {
               showWindow()
             }
-          }) */   
+          })   
         }
       },
 
@@ -116,9 +116,7 @@ function toggleWindow()
 
 function showWindow() {
   var position = getPosition();
-  console.log(position)
-  //mainWindow.setPosition(position.x, position.y, false)
-  mainWindow.setPosition(100, 100, false)
+  mainWindow.setPosition(position.x, position.y, false)
   mainWindow.show()
   mainWindow.focus()
 }
