@@ -5,9 +5,9 @@
 </head>
 <body>
 	<div id='app'>
-		<input type="text" v-model="city" name="Город тут">
+		<input type="text" v-model="city" name="Город тут" placeholder="Select your city">
 		<div class="list">
-			<ul>
+			<ul style="list-style: none">
 				<li v-for="city in finded">
 					{{city}}
 				</li>

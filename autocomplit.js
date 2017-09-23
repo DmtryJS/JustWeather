@@ -1,7 +1,7 @@
 var app = new Vue({
 	el: '#app',
 	data: {
-		city: 'Город сдесь',
+		city: '',
 		citys: [],
 		finded: []
 	},
@@ -21,11 +21,9 @@ var app = new Vue({
 		{
 			let self = this;
 			var expr = new RegExp('^' + val, 'i');
-			cityList.forEach(function(item, i, arr) {
-				if(expr.test(item))
-				{
-					self.finded.push(arr[i])
-				}
+			self.finded = cityList.filter(function(item) 
+			{
+				return expr.test(item)		
 			})
 		}
 	},
