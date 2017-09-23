@@ -74071,3 +74071,5 @@ var cityList = [
 'Binga',
 'Banket'
 ]
+
+module.exports = cityList;

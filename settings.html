@@ -24,6 +24,11 @@
 					<li>
 						<label for="city"><i class="ion-location"></i> City</label>							
 						<input type="text" name="city" v-model="city" size="16"><br>
+						<ul style="list-style: none">
+							<li v-for="city in finded">
+								{{city}}
+							</li>
+						</ul>
 					</li>
          	</ul>			
          	<div class="apply">
