@@ -13,7 +13,8 @@ var vue_settings = new Vue({
    	          	token_value: settings.token,
    	          	city: settings.city,
                 citys: [],
-                finded: []
+                finded: [],
+                search_visible: true
    	          },
                 watch: {
                     city: function(val, oldVal)
@@ -52,6 +53,18 @@ var vue_settings = new Vue({
                       {
                           return expr.test(item)    
                       })
+                  },
+
+                  select: function(elem)
+                  {
+                     let self = this;
+                     self.city = elem.target.innerText;
+                     self.search_visible = false;
+              
+                     setTimeout(function(){
+                        self.search_visible = true;
+                        self.finded = [];
+                     }, 1000);
                   }
         
               	 },

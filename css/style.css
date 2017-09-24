@@ -333,4 +333,10 @@ ul.form_container {
     list-style: none;
     display: list-item;
     background-image: none;
+    cursor: pointer;
+}
+
+.city_list_wrapper ul li:hover{
+    background-color: #000;
+    color: #fff;
 }

@@ -36,9 +36,9 @@
          	</div>
          </div>
       </div>
-      <div class="city_list_wrapper">
+      <div class="city_list_wrapper" v-if="search_visible">
 			<ul style="list-style: none">
-				<li v-for="city in finded">
+				<li v-for="city in finded" v-on:click ="select">
 					{{city}}
 				</li>
 			</ul>

@@ -133,7 +133,7 @@ function getPosition()
       displayWidth = mainScreen.bounds.width;
        
   var x = tray_icon.x + (tray_icon.width/2 - appWidth/2);
-      y = displayHeight - appHeight - 30; 
+      y = displayHeight - appHeight - 50; 
 
       //если окно вылазит за края дисплея, 
       //пока вариант только для классического расположения панели, те внизу.
