@@ -19,7 +19,7 @@ function createWindow () {
       width: 460, 
       height: 200,
       show: false, //по умолчанию скрываем окно
-      //resizable: false, //запрет resize
+      resizable: false, //запрет resize
       skipTaskbar: true, //запрет отображения в трее
       icon: icon_path,
      // transparent: true,

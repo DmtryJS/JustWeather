@@ -309,3 +309,28 @@ ul.form_container {
     width:220px; 
     padding:5px 8px;
 }
+
+.city_list_wrapper {
+    position: absolute;
+    top: 86px;
+    left: 178px;
+    width: 239px;
+    display: block;
+    background: #fff;
+}
+
+
+.city_list_wrapper ul {
+    max-height: 55px;
+    padding-left: 7px;
+    margin: 0;
+    position: relative;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.city_list_wrapper ul li{
+    list-style: none;
+    display: list-item;
+    background-image: none;
+}
