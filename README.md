@@ -1,8 +1,8 @@
 Weather widget for PC 
 -----------------------------------
 
-Hi, this is a simple weather widget, is an experiment to try Electron JS and Vue Js.  
-The widget uses a free API openweathermap. The idea is that the application should be   
+Hi, this is a simple weather widget, is an experiment to try [Electron](https://electronjs.org/) and [Vue Js](https://vuejs.org/).  
+The widget uses a free API [Openweathermap](https://openweathermap.org/). The idea is that the application should be   
 cross-platform, as it is written using Node JS, but I tried it only on Windows 8 & 10
 
 ### Install and starting
