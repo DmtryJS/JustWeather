@@ -20,7 +20,7 @@ function createWindow () {
       height: 200,
       show: false, //по умолчанию скрываем окно
       resizable: false, //запрет resize
-      skipTaskbar: false, //запрет отображения в трее
+      skipTaskbar: true, //запрет отображения в трее
       icon: icon_path,
      /* transparent: true,*/
       frame: false,
@@ -35,7 +35,7 @@ function createWindow () {
   })
 
   //убрать меню
-  mainWindow.setMenuBarVisibility(true)
+  mainWindow.setMenuBarVisibility(false)
 
   mainWindow.on('show', function() {
   tray.setHighlightMode('always')
