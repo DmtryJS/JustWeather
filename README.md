@@ -20,6 +20,15 @@ npm start   //start application
 click to icon in tray -> settings -> Application token  
 Insert your security key from <https://openweathermap.org/appid>
 
+### Package and build
+
+By default package.json contains windows ready build config. After the build, a folder 'dist' is created that contains the installer executable file. 
+The application icon appears on the desktop.
+
+```bash
+npm run dist
+```
+
 ### Screenshots  
 
 in Tray  
@@ -30,5 +39,6 @@ settings tray menu
 
 city select  
 ![city_select](https://github.com/DmtryJS/weather_widjet/blob/master/screens/3.png)
+
 
 
