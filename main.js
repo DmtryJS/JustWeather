@@ -3,7 +3,7 @@ const {app, Menu, ipcMain, Tray, BrowserWindow, webContents} = require('electron
 const electron = require('electron')
 const path = require('path')
 const url = require('url')
-var icon_path = './img/icon.png'
+let icon_path = path.join(app.getAppPath(), 'img', 'icon.png')
 
 let mainWindow
 let tray = null
@@ -20,9 +20,9 @@ function createWindow () {
       height: 200,
       show: false, //по умолчанию скрываем окно
       resizable: false, //запрет resize
-      skipTaskbar: true, //запрет отображения в трее
+      skipTaskbar: false, //запрет отображения в трее
       icon: icon_path,
-     // transparent: true,
+     /* transparent: true,*/
       frame: false,
       toolbar: false
     })
@@ -35,7 +35,7 @@ function createWindow () {
   })
 
   //убрать меню
-  mainWindow.setMenuBarVisibility(false)
+  mainWindow.setMenuBarVisibility(true)
 
   mainWindow.on('show', function() {
   tray.setHighlightMode('always')
@@ -48,13 +48,14 @@ function createWindow () {
 
 app.on('ready', function() { 
   createWindow()
+  //mainWindow.webContents.openDevTools() //открыть дев тул
   createTray()
 })
 
 function createTray()
 {
-  
-  tray = new Tray('./img/preloader_tray_icon.png')
+  let traiIconPath = path.join(app.getAppPath(), 'img', 'preloader_tray_icon.png')
+  tray = new Tray(traiIconPath)
   tray.setToolTip('Запрос погоды...')
   
   const contextMenu = Menu.buildFromTemplate(
@@ -163,6 +164,7 @@ function routeTo(win, to)
 }
 //обновление иконки после прихода погоды
 ipcMain.on('updateTrayIconEvent', (event, arg) => {
-  tray.setToolTip('Температура на улице ' + arg.today_temp + '°C');
-  tray.setImage('./img/' + arg.icon + '.png');
+  tray.setToolTip('Температура на улице ' + arg.today_temp + '°C')
+  let iconPath = path.join(app.getAppPath(), 'img', arg.icon + '.png')
+  tray.setImage(iconPath)
 })

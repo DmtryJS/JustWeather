@@ -1,15 +1,27 @@
 {
-  "name": "electron-quick-start",
+  "name": "JustWeather",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "Simple weather widget",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "dist": "build"
   },
-  "devDependencies": {
+  "dependencies": {
     "axios": "^0.16.2",
-    "electron": "~1.6.2",
     "read-ini-file": "^1.0.0",
     "write-ini-file": "^1.0.0"
+  },
+  "devDependencies": {
+    "electron": "~3.0.10",
+    "electron-builder": "^20.38.2"
+  },
+  "build": {
+    "appId": "com.github.dmtryjs",
+    "win": {
+      "target": "nsis",
+      "icon": ".\\img\\desktop.ico",
+      "asar": false
+    }
   }
 }
