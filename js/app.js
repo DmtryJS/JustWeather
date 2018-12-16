@@ -22,7 +22,8 @@ var vue_app = new Vue({
   	             description: '',
                  days: [],
                  show: false,
-                 today_weather_icon: ""
+                 today_weather_icon: "",
+                 error_message: ""
    	            },
               
               methods: {
@@ -31,10 +32,13 @@ var vue_app = new Vue({
                     let a = this;
                     axios.get(requestString)
                           .then(function (response) {
+                              a.error_message = "";
                               a.render(response.data);
                           })
                           .catch(function (error) {
-                              console.log(error);
+                            a.error_message = "Error communicating with the weather provider.\n" +
+                            error.response.data.message + " \n" +
+                            "Response status: " + error.response.status
                           });
                 }, 
 

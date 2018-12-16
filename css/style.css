@@ -1,6 +1,7 @@
 body {
 	  padding: 0px;
     margin: 0px;
+    user-select: none;
 }
 
 .clearfix:after {
@@ -32,6 +33,10 @@ button:focus {
   width: 435px;
   position: relative;
   padding: 5px;
+}
+
+.error {
+  margin-top: 20px;
 }
 
 .widget-left__body,
