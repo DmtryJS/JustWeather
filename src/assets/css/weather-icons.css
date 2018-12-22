@@ -1,0 +1,127 @@
+/*!
+ *  Weather Icons 2.0.8
+ *  Updated September 19, 2015
+ *  Weather themed icons for Bootstrap
+ *  Author - Erik Flowers - erik@helloerik.com
+ *  Email: erik@helloerik.com
+ *  Twitter: http://twitter.com/Erik_UX
+ *  ------------------------------------------------------------------------------
+ *  Maintained at http://erikflowers.github.io/weather-icons
+ *
+ *  License
+ *  ------------------------------------------------------------------------------
+ *  - Font licensed under SIL OFL 1.1 -
+ *    http://scripts.sil.org/OFL
+ *  - CSS, SCSS and LESS are licensed under MIT License -
+ *    http://opensource.org/licenses/mit-license.html
+ *  - Documentation licensed under CC BY 3.0 -
+ *    http://creativecommons.org/licenses/by/3.0/
+ *  - Inspired by and works great as a companion with Font Awesome
+ *    "Font Awesome by Dave Gandy - http://fontawesome.io"
+ */
+@font-face {
+  font-family: 'weathericons';
+  src: url('../fonts/weathericons-regular-webfont.eot');
+  src: url('../fonts/weathericons-regular-webfont.eot?#iefix') format('embedded-opentype'), url('../fonts/weathericons-regular-webfont.woff2') format('woff2'), url('../fonts/weathericons-regular-webfont.woff') format('woff'), url('../fonts/weathericons-regular-webfont.ttf') format('truetype'), url('../fonts/weathericons-regular-webfont.svg#weather_iconsregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+.wi {
+  display: inline-block;
+  font-family: 'weathericons';
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.wi-fw {
+  text-align: center;
+  width: 1.4em;
+}
+.wi-rotate-90 {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1);
+  -webkit-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+.wi-rotate-180 {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+.wi-rotate-270 {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+  -webkit-transform: rotate(270deg);
+  -ms-transform: rotate(270deg);
+  transform: rotate(270deg);
+}
+.wi-flip-horizontal {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1);
+  -webkit-transform: scale(-1, 1);
+  -ms-transform: scale(-1, 1);
+  transform: scale(-1, 1);
+}
+.wi-flip-vertical {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1);
+  -webkit-transform: scale(1, -1);
+  -ms-transform: scale(1, -1);
+  transform: scale(1, -1);
+}
+.wi-01d:before {
+  content: "\f00d";
+}
+.wi-01n:before {
+  content: "\f02e";
+}
+.wi-02d:before {
+  content: "\f002";
+}
+.wi-02n:before {
+  content: "\f086";
+}
+.wi-03d:before {
+  content: "\f013";
+}
+.wi-03n:before {
+  content: "\f013";
+}
+.wi-04d:before {
+  content: "\f07d";
+}
+.wi-04n:before {
+  content: "\f080";
+}
+.wi-09d:before {
+  content: "\f01c";
+}
+.wi-09n:before {
+  content: "\f01c";
+}
+.wi-10d:before {
+  content: "\f008";
+}
+.wi-10n:before {
+  content: "\f028";
+}
+.wi-11d:before {
+  content: "\f01e";
+}
+.wi-11n:before {
+  content: "\f01e";
+}
+.wi-13d:before {
+  content: "\f01b";
+}
+.wi-13n:before {
+  content: "\f01b";
+}
+.wi-50d:before {
+  content: "\f014";
+}
+.wi-50n:before {
+  content: "\f014";
+}
+
+
