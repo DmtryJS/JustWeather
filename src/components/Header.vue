@@ -12,10 +12,17 @@
 </template>
 
 <script>
+const { ipcRenderer } = require("electron");
+
 export default {
   name: "Header",
   props: {
     city: String
+  },
+  methods: {
+    hideEvent: function() {
+      ipcRenderer.send("hideEvent");
+    }  
   }
 };
 </script>
