@@ -5,7 +5,7 @@
     </button>
     <div class="header-wrapper">
       <div class="header-layout">
-        <h2 class="header-city">Weather for {{ city }}</h2>
+        <h2 class="header-msg">{{ msg }}</h2>
       </div>
     </div>
   </div>
@@ -17,7 +17,7 @@ const { ipcRenderer } = require("electron");
 export default {
   name: "Header",
   props: {
-    city: String
+    msg: String
   },
   methods: {
     hideEvent: function() {
@@ -64,7 +64,7 @@ export default {
   position: relative;
   width: 100%;
 }
-.header-city {
+.header-msg {
   color: #333;
   float: left;
   font: 700 18px/1 Roboto, Arial, sans-serif;

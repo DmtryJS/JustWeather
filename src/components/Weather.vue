@@ -44,30 +44,17 @@
 <script>
 const { ipcRenderer } = require("electron"),
   axios = require("axios"),
-  loadIniFile = require("read-ini-file"),
-  path = require("path"),
-  settings_path = path.join("settings.ini"),
-  settings = loadIniFile.sync(settings_path);
-
-const token = settings.token,
-  city = settings.city,
-  count = 4, //количество дней
   baseUrl = "http://api.openweathermap.org/data/2.5/forecast/daily",
-  requestString =
-    baseUrl +
-    "?q=" +
-    city +
-    "&APPID=" +
-    token +
-    "&units=metric" +
-    "&cnt=" +
-    count;
+  count = 4; //количество дней
 
 export default {
   name: "Weather",
+  props: {
+    city: String,
+    token: String
+  },
   data: function() {
     return {
-      city: city,
       today_temp: "",
       clouds: "",
       winds: "",
@@ -85,7 +72,7 @@ export default {
     getData: function() {
       let a = this;
       axios
-        .get(requestString)
+        .get(a.getRequestString())
         .then(function(response) {
           a.error_message = "";
           a.render(response.data);
@@ -139,6 +126,17 @@ export default {
 
     convertPlesure: function(plesureOnHpa) {
       return Math.round(plesureOnHpa * 0.75);
+    },
+
+    getRequestString: function() {
+      return baseUrl +
+        "?q=" +
+        this.city +
+        "&APPID=" +
+        this.token +
+        "&units=metric" +
+        "&cnt=" +
+        count;
     }
   }
 };
