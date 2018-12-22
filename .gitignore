@@ -2,3 +2,4 @@ node_modules
 temp.html
 screens
 dist
+package-lock.json
