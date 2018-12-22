@@ -7051,7 +7051,7 @@ var cityList = [
 'Montague',
 'Berwick',
 'Glace Bay',
-'Metabetchouan–Lac-a-la-Croix',
+'Metabetchouanï¿½Lac-a-la-Croix',
 'Sainte-Julienne',
 'Bonavista',
 'Tofield',

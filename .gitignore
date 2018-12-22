@@ -3,3 +3,6 @@ temp.html
 screens
 dist
 package-lock.json
+
+#Electron-builder output
+/dist_electron

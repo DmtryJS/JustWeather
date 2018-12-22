@@ -2,31 +2,34 @@
   "name": "JustWeather",
   "version": "1.0.0",
   "description": "Simple weather widget",
-  "main": "main.js",
   "scripts": {
-    "start": "electron .",
-    "dist": "build",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "dist": "build",
+    "electron:build": "vue-cli-service electron:build",
+    "electron:serve": "vue-cli-service electron:serve",
+    "postinstall": "electron-builder install-app-deps",
+    "start": "electron ."
   },
   "dependencies": {
     "axios": "^0.16.2",
     "read-ini-file": "^1.0.0",
-    "write-ini-file": "^1.0.0",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "write-ini-file": "^1.0.0"
   },
   "devDependencies": {
-    "electron": "~3.0.10",
-    "electron-builder": "^20.38.2",
     "@vue/cli-plugin-babel": "^3.2.0",
     "@vue/cli-plugin-eslint": "^3.2.0",
     "@vue/cli-service": "^3.2.0",
     "babel-eslint": "^10.0.1",
+    "electron": "~3.0.10",
+    "electron-builder": "^20.38.2",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0-0",
+    "vue-cli-plugin-electron-builder": "^1.0.0-rc.10",
     "vue-template-compiler": "^2.5.17"
   },
   "build": {
@@ -36,5 +39,6 @@
       "icon": ".\\img\\desktop.ico",
       "asar": false
     }
-  }
+  },
+  "main": "background.js"
 }
