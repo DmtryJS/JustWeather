@@ -1,63 +1,65 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, Menu, ipcMain, Tray } from 'electron'
 import {
   createProtocol,
   installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib'
 const isDevelopment = process.env.NODE_ENV !== 'production'
+const electron = require('electron')
+const path = require('path')
+const imgBasePath = path.join('src','assets', 'img');
+let icon_path = path.join(imgBasePath, 'icon.png')
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
 let win
+let tray
 
-// Standard scheme must be registered before the app is ready
 protocol.registerStandardSchemes(['app'], { secure: true })
-function createWindow () {
-  // Create the browser window.
-  win = new BrowserWindow({ width: 800, height: 600 })
 
-  if (process.env.WEBPACK_DEV_SERVER_URL) {
-    // Load the url of the dev server if in development mode
-    win.loadURL(process.env.WEBPACK_DEV_SERVER_URL)
-    if (!process.env.IS_TEST) win.webContents.openDevTools()
-  } else {
-    createProtocol('app')
-    // Load the index.html when not in development
-    win.loadURL('app://./index.html')
-  }
+function createWindow () {
+  win = new BrowserWindow({ 
+    width: 800, 
+    height: 600,
+    icon: icon_path
+   })
+
+  routeTo(win, "")
 
   win.on('closed', () => {
     win = null
   })
+   //убрать меню
+   //win.setMenuBarVisibility(false)
+
+   win.on('show', function() {
+   tray.setHighlightMode('always')
+   })
+ 
+   win.on('hide', function() {
+     tray.setHighlightMode('never')
+   })
 }
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
     app.quit()
   }
 })
 
 app.on('activate', () => {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
   if (win === null) {
     createWindow()
   }
 })
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
   if (isDevelopment && !process.env.IS_TEST) {
     // Install Vue Devtools
     await installVueDevtools()
   }
   createWindow()
+  createTray()
 })
 
 // Exit cleanly on request from parent process in development mode.
@@ -74,3 +76,121 @@ if (isDevelopment) {
     })
   }
 }
+
+function createTray()
+{
+  let traiIconPath = path.join(imgBasePath, 'preloader_tray_icon.png')
+  tray = new Tray(traiIconPath)
+  tray.setToolTip('Запрос погоды...')
+  
+  const contextMenu = Menu.buildFromTemplate(
+    [ 
+      {
+        label: 'Settings', 
+        type: 'normal',
+
+        click: function() 
+        {
+          routeTo(win, "#settings")
+          let contents = win.webContents
+
+          contents.on('dom-ready', function()
+          {
+            if(!win.isVisible())
+            {
+              showWindow()
+            }
+          })   
+        }
+      },
+
+      {
+        label: 'Exit', 
+        type: 'normal', 
+      
+        click: function() 
+        {
+          win = null
+          app.quit()
+        }
+      }
+    ])
+  
+  tray.setContextMenu(contextMenu)
+
+  tray.on('click', function() {
+  toggleWindow();
+})
+}
+
+function toggleWindow() 
+{
+  if (win.isVisible()) 
+  {
+    win.hide()
+  } else 
+  {
+    showWindow()
+  }
+}
+
+function showWindow() {
+  var position = getPosition();
+  win.setPosition(position.x, position.y, false)
+  win.show()
+  win.focus()
+}
+
+function getPosition()
+{
+  var screen = electron.screen,
+      mainScreen = screen.getPrimaryDisplay(),
+      tray_icon = tray.getBounds(),
+
+      appWidth = win.getBounds().width,
+      appHeight = win.getBounds().height,
+      displayHeight = mainScreen.bounds.height,
+      displayWidth = mainScreen.bounds.width;
+       
+  var x = tray_icon.x + (tray_icon.width/2 - appWidth/2),
+      y = displayHeight - appHeight - 50; 
+
+      //если окно вылазит за края дисплея, 
+      //пока вариант только для классического расположения панели, те внизу.
+      if ((x + appWidth - 10) > displayWidth)
+      {
+        x = displayWidth - appWidth - 10;
+      }
+
+  return {x : x, y : y}
+}
+
+ipcMain.on('hideEvent', () => {
+  toggleWindow();
+})
+
+ipcMain.on('routerEvent', function(event, arg) {
+  routeTo(win, arg)
+})
+
+function routeTo(win, to) {
+  if (process.env.WEBPACK_DEV_SERVER_URL) {
+    win.loadURL(process.env.WEBPACK_DEV_SERVER_URL + to)
+  } else {
+    createProtocol('app')
+    win.loadURL('app://./index.html' + to)
+  }
+  /** win.loadURL(url.format({
+          pathname: path.join(__dirname, to),
+          protocol: 'file:',
+          slashes: true
+          }))
+          */
+}
+//обновление иконки после прихода погоды
+ipcMain.on('updateTrayIconEvent', (event, arg) => {
+  tray.setToolTip('Температура на улице ' + arg.today_temp + '°C')
+  let iconPath = path.join(imgBasePath, arg.icon + '.png')
+  tray.setImage(iconPath)
+})
+
