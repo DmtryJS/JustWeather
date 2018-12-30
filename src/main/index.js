@@ -1,26 +1,25 @@
 'use strict'
 
 import { app, protocol, BrowserWindow, Menu, ipcMain, Tray } from 'electron'
-import {
-  createProtocol,
-  installVueDevtools
-} from 'vue-cli-plugin-electron-builder/lib'
-const isDevelopment = process.env.NODE_ENV !== 'production'
-const electron = require('electron')
-const path = require('path')
+import { format as formatUrl } from 'url'
+const electron = require('electron');
+const path = require('path');
+
+const isDevelopment = process.env.NODE_ENV !== 'production';
+
 const imgBasePath = path.join('src','assets', 'img');
-let icon_path = path.join(imgBasePath, 'icon.png')
 
-let win
-let tray
-
+let win;
+let tray;
 protocol.registerStandardSchemes(['app'], { secure: true })
+
+const trayIcon = path.join(__static, 'img', 'icon.png');
 
 function createWindow () {
   win = new BrowserWindow({ 
     width: 800, 
     height: 600,
-    icon: icon_path
+    icon: trayIcon
    })
 
   routeTo(win, "")
@@ -29,7 +28,7 @@ function createWindow () {
     win = null
   })
    //убрать меню
-   //win.setMenuBarVisibility(false)
+   win.setMenuBarVisibility(true)
 
    win.on('show', function() {
    tray.setHighlightMode('always')
@@ -53,12 +52,9 @@ app.on('activate', () => {
   }
 })
 
-app.on('ready', async () => {
-  if (isDevelopment && !process.env.IS_TEST) {
-    // Install Vue Devtools
-    await installVueDevtools()
-  }
+app.on('ready', () => {
   createWindow()
+  win.webContents.openDevTools(); //открыть dev tools
   createTray()
 })
 
@@ -174,18 +170,15 @@ ipcMain.on('routerEvent', function(event, arg) {
 })
 
 function routeTo(win, to) {
-  if (process.env.WEBPACK_DEV_SERVER_URL) {
-    win.loadURL(process.env.WEBPACK_DEV_SERVER_URL + to)
+  if (isDevelopment) {
+    win.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}` + to)
   } else {
-    createProtocol('app')
-    win.loadURL('app://./index.html' + to)
+    win.loadURL(formatUrl({
+      pathname: path.join(__dirname, 'index.html' + to),
+      protocol: 'file',
+      slashes: true
+    }))
   }
-  /** win.loadURL(url.format({
-          pathname: path.join(__dirname, to),
-          protocol: 'file:',
-          slashes: true
-          }))
-          */
 }
 //обновление иконки после прихода погоды
 ipcMain.on('updateTrayIconEvent', (event, arg) => {
@@ -193,4 +186,3 @@ ipcMain.on('updateTrayIconEvent', (event, arg) => {
   let iconPath = path.join(imgBasePath, arg.icon + '.png')
   tray.setImage(iconPath)
 })
-

@@ -6,19 +6,17 @@
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
-import Weather from "@/components/Weather.vue";
-const loadIniFile = require("read-ini-file"),
-  path = require("path"),
-  settings_path = path.join("settings.ini"),
-  settings = loadIniFile.sync(settings_path);
+import Header from "./../components/Header.vue";
+import Weather from "./../components/Weather.vue";
+import { remote } from 'electron';
+const config = require('electron-json-config');
 
 export default {
   name: "main",
   data: function() {
     return {
-      city: settings.city,
-      token: settings.token
+      city: config.get('city'),
+      token: config.get('token')
     };
   },
   components: {
@@ -27,6 +25,9 @@ export default {
   },
   computed: {
     message: function() {
+      if(!config.has("city") || !config.has("token")) {
+        return "Please configure city and token";
+      }
       return "Weather for " + this.city;
     }
   }

@@ -2,43 +2,26 @@
   "name": "JustWeather",
   "version": "1.0.0",
   "description": "Simple weather widget",
+  "main": "index.js",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
-    "dist": "build",
-    "electron:build": "vue-cli-service electron:build",
-    "electron:serve": "vue-cli-service electron:serve",
-    "postinstall": "electron-builder install-app-deps",
-    "start": "electron ."
+    "start": "electron-webpack dev",
+    "build": "electron-webpack && electron-builder"
   },
   "dependencies": {
     "axios": "^0.16.2",
-    "read-ini-file": "^1.0.0",
-    "vue": "^2.5.17",
-    "vue-router": "^3.0.1",
-    "vuex": "^3.0.1",
-    "write-ini-file": "^1.0.0"
+    "electron-json-config": "^1.5.3",
+    "source-map-support": "^0.5.6"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.2.0",
-    "@vue/cli-plugin-eslint": "^3.2.0",
-    "@vue/cli-service": "^3.2.0",
-    "babel-eslint": "^10.0.1",
-    "electron": "~3.0.10",
-    "electron-builder": "^20.38.2",
-    "eslint": "^5.8.0",
-    "eslint-plugin-vue": "^5.0.0-0",
-    "vue-cli-plugin-electron-builder": "^1.0.0-rc.10",
-    "vue-template-compiler": "^2.5.17"
-  },
-  "build": {
-    "appId": "com.github.dmtryjs",
-    "win": {
-      "target": "nsis",
-      "icon": ".\\img\\desktop.ico",
-      "asar": false
-    }
-  },
-  "main": "background.js"
+    "copy-webpack-plugin": "^4.6.0",
+    "css-loader": "^2.1.0",
+    "electron": "^4.0.0",
+    "electron-builder": "^20.15.1",
+    "electron-webpack": "^2.1.2",
+    "vue": "^2.5.16",
+    "vue-loader": "^15.2.2",
+    "vue-router": "^3.0.1",
+    "vue-template-compiler": "^2.5.16",
+    "webpack": "^4.9.1"
+  }
 }

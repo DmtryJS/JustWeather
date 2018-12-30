@@ -5,8 +5,8 @@
   </div>
 </template>
 <script>
-import Header from "@/components/Header.vue";
-import SettingsForm from "@/components/SettingsForm.vue";
+import Header from "./../components/Header.vue";
+import SettingsForm from "./../components/SettingsForm.vue";
 export default {
   name: "main",
    components: {

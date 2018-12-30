@@ -35,19 +35,15 @@
 </template>
 <script>
 const { ipcRenderer } = require("electron");
-const loadIniFile = require("read-ini-file");
-const writeIniFile = require("write-ini-file");
-const path = require("path");
-const settings_path = path.join("settings.ini");
-const settings = loadIniFile.sync(settings_path);
-const cityList = require("../../src/assets/cityList");
-//const cityList = ["Razvilka", "Moscow", "Firozpur Jhirka", "Kathmandu", "Kiev"];
+const config = require("electron-json-config");
+const cityList = require("../assets/cityList.js");
+
 export default {
   name: "SettingsForm",
   data: function() {
     return {
-      token_value: settings.token,
-      city: settings.city,
+      token_value: config.get("token"),
+      city: config.get("city"),
       citys: [],
       finded: [],
       search_visible: true
@@ -63,12 +59,11 @@ export default {
   },
   methods: {
     apply: function() {
-      writeIniFile(settings_path, {
-        token: this.token_value,
-        city: this.city
-      }).then(function() {
-        ipcRenderer.send("routerEvent", "");
+      config.setBulk({
+        "token": this.token_value,
+        "city": this.city
       });
+      ipcRenderer.send("routerEvent", "");
     },
 
     cancel: function() {

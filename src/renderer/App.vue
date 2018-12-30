@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<style src="./assets/css/ionicons.css"></style>
+<style src="../assets/css/ionicons.css"></style>
 <style>
 body {
   padding: 0px;

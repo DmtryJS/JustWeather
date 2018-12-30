@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     hideEvent: function() {
-      ipcRenderer.send("hideEvent");
+    ipcRenderer.send("hideEvent");
     }  
   }
 };
