@@ -23,5 +23,22 @@
     "vue-router": "^3.0.1",
     "vue-template-compiler": "^2.5.16",
     "webpack": "^4.9.1"
+  },
+  "build": {
+    "appId": "com.github.dmtryjs",
+    "win": {
+      "target": "nsis",
+      "asar": false,
+      "icon": ".\\static\\img\\weather.ico"
+    },
+    "extraResources": [
+      {
+        "from": "./src/assets/img/",
+        "to": "extraResources/img",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ]
   }
 }

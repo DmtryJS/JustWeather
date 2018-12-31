@@ -1,27 +1,39 @@
 'use strict'
 
 import { app, protocol, BrowserWindow, Menu, ipcMain, Tray } from 'electron'
-import { format as formatUrl } from 'url'
+import Vue from 'vue';
+export const EventBus = new Vue();
 const electron = require('electron');
 const path = require('path');
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
-const imgBasePath = path.join('src','assets', 'img');
+let imgBasePath;
+
+if(isDevelopment) {
+  imgBasePath = path.join('src','assets', 'img');
+} else {
+  imgBasePath = path.join(path.dirname(__dirname), 'extraResources', 'img');
+}
 
 let win;
 let tray;
 protocol.registerStandardSchemes(['app'], { secure: true })
 
-const trayIcon = path.join(__static, 'img', 'icon.png');
+const trayIcon = path.join(__static, 'img', 'weather.ico');
 
 function createWindow () {
   win = new BrowserWindow({ 
-    width: 800, 
-    height: 600,
-    icon: trayIcon
+    width: 460, 
+    height: 200,
+    icon: trayIcon,
+    resizable: false,
+    skipTaskbar: true,
+    frame: false,
+    toolbar: false
    })
-
+   
+  win.hide()
   routeTo(win, "")
 
   win.on('closed', () => {
@@ -34,6 +46,7 @@ function createWindow () {
    tray.setHighlightMode('always')
    })
  
+   win.setMenuBarVisibility(false)
    win.on('hide', function() {
      tray.setHighlightMode('never')
    })
@@ -54,7 +67,7 @@ app.on('activate', () => {
 
 app.on('ready', () => {
   createWindow()
-  win.webContents.openDevTools(); //открыть dev tools
+  //win.webContents.openDevTools(); //открыть dev tools
   createTray()
 })
 
@@ -173,11 +186,7 @@ function routeTo(win, to) {
   if (isDevelopment) {
     win.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}` + to)
   } else {
-    win.loadURL(formatUrl({
-      pathname: path.join(__dirname, 'index.html' + to),
-      protocol: 'file',
-      slashes: true
-    }))
+    win.loadURL(path.join(__dirname, 'index.html' + to))
   }
 }
 //обновление иконки после прихода погоды

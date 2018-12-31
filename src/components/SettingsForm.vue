@@ -36,14 +36,14 @@
 <script>
 const { ipcRenderer } = require("electron");
 const config = require("electron-json-config");
-const cityList = require("../assets/cityList.js");
-
+//const cityList = require("../assets/cityList.js");
+const cityList = ["Saransk", "Moscow"];
 export default {
   name: "SettingsForm",
   data: function() {
     return {
-      token_value: config.get("token"),
-      city: config.get("city"),
+      token_value: config.get('token'),
+      city: config.get('city'),
       citys: [],
       finded: [],
       search_visible: true

@@ -6,14 +6,15 @@ import Settings from './../views/Settings.vue'
 Vue.use(Router)
 
 export default new Router({
-  //mode: 'history',
   routes: [
     {
       path: '/',
+      name: 'home',
       component: Main
     },
     {
       path: '/settings',
+      name: 'settings',
       component: Settings
     }
   ]
