@@ -36,8 +36,8 @@
 <script>
 const { ipcRenderer } = require("electron");
 const config = require("electron-json-config");
-//const cityList = require("../assets/cityList.js");
-const cityList = ["Saransk", "Moscow"];
+const cityList = require("../assets/cityList.js"); //эту дичь надоверно поправить стоит
+//const cityList = ["Saransk", "Moscow"];
 export default {
   name: "SettingsForm",
   data: function() {
