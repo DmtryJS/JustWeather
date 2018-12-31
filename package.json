@@ -1,5 +1,9 @@
 {
   "name": "JustWeather",
+  "author": {
+    "name": "Dmtry Antonov", 
+    "email": "dmtry.antonov@gmail.com"
+  },
   "version": "1.0.0",
   "description": "Simple weather widget",
   "main": "index.js",
