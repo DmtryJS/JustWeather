@@ -10,7 +10,7 @@ cross-platform, as it is written using Node JS, but I tried it only on Windows 8
 
 ### Uses without developing stuff
 
-You need to download the compiling version. You also need to register on https://openweathermap.org/appid site to get a free token to use this application.
+You need to download the compiled version from the [release page](https://github.com/DmtryJS/weather_widjet/releases/). You also need to register on https://openweathermap.org/appid site to get a free token to use this application.
 
 ### Developing
 
