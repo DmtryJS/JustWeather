@@ -8,13 +8,7 @@ const path = require('path');
 
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
-let imgBasePath;
-
-if(isDevelopment) {
-  imgBasePath = path.join('src','assets', 'img');
-} else {
-  imgBasePath = path.join(path.dirname(__dirname), 'extraResources', 'img');
-}
+let imgBasePath = path.join(path.dirname(__dirname), 'assets', 'img'); //это берем из extraResources (package.json)
 
 let win;
 let tray;
@@ -25,9 +19,12 @@ const trayIcon = path.join(__static, 'img', 'weather.ico');
 function createWindow () {
   win = new BrowserWindow({ 
     width: 460, 
+    //width: 860, 
     height: 200,
+    //height: 800,
     icon: trayIcon,
     resizable: false,
+    //resizable: true,
     skipTaskbar: true,
     frame: false,
     toolbar: false
@@ -90,7 +87,7 @@ function createTray()
 {
   let traiIconPath = path.join(imgBasePath, 'preloader_tray_icon.png')
   tray = new Tray(traiIconPath)
-  tray.setToolTip('Запрос погоды...')
+  tray.setToolTip('Connecting to the weather server...')
   
   const contextMenu = Menu.buildFromTemplate(
     [ 
@@ -191,7 +188,7 @@ function routeTo(win, to) {
 }
 //обновление иконки после прихода погоды
 ipcMain.on('updateTrayIconEvent', (event, arg) => {
-  tray.setToolTip('Температура на улице ' + arg.today_temp + '°C')
+  tray.setToolTip('Outdoor temperature ' + arg.today_temp + '°C')
   let iconPath = path.join(imgBasePath, arg.icon + '.png')
   tray.setImage(iconPath)
 })

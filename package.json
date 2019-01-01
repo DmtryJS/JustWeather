@@ -38,9 +38,16 @@
     "extraResources": [
       {
         "from": "./src/assets/img/",
-        "to": "extraResources/img",
+        "to": "assets/img",
         "filter": [
           "**/*"
+        ]
+      },
+      {
+        "from": "./src/assets/",
+        "to": "assets",
+        "filter": [
+          "*.json"
         ]
       }
     ]

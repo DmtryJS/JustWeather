@@ -36,8 +36,10 @@
 <script>
 const { ipcRenderer } = require("electron");
 const config = require("electron-json-config");
-const cityList = require("../assets/cityList.js"); //эту дичь надоверно поправить стоит
-//const cityList = ["Saransk", "Moscow"];
+const fs = require('fs');
+const path = require('path');
+const filePath =  path.join(path.dirname(__dirname), 'assets', 'cityList.json'); //это берем из extraResources (package.json)
+
 export default {
   name: "SettingsForm",
   data: function() {
@@ -46,13 +48,15 @@ export default {
       city: config.get('city'),
       citys: [],
       finded: [],
-      search_visible: true
+      search_visible: true,
+      cityList: null
     };
   },
   watch: {
     city: function(val) {
       this.finded = [];
       if (val.length >= 2) {
+        this.readFile();
         this.search(val);
       }
     }
@@ -63,17 +67,19 @@ export default {
         "token": this.token_value,
         "city": this.city
       });
+      this.cityList = null;
       ipcRenderer.send("routerEvent", "");
     },
 
     cancel: function() {
+      this.cityList = null;
       ipcRenderer.send("routerEvent", "");
     },
 
     search: function(val) {
       let self = this;
       var expr = new RegExp("^" + val, "i");
-      self.finded = cityList.filter(function(item) {
+      self.finded = this.cityList.filter(function(item) {
         return expr.test(item);
       });
     },
@@ -87,6 +93,10 @@ export default {
         self.search_visible = true;
         self.finded = [];
       }, 1000);
+    },
+
+    readFile: function() {
+      this.cityList = JSON.parse(fs.readFileSync(filePath, "utf-8")).cityList;
     }
   }
 };

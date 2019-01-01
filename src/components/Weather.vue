@@ -104,9 +104,9 @@ export default {
       this.today_temp = this.roundCelsius(d[0].temp.day);
       this.clouds = d[0].weather[0].main;
       this.winds =
-        "Ветер: " +
+        "Wind: " +
         d[0].speed +
-        " м/с, Давление: " +
+        " m/s, Pressure: " +
         this.convertPlesure(d[0].pressure) +
         "mmHg";
       this.today_weather_icon = "wi wi-" + d[0].weather[0].icon;
